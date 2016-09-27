@@ -49,6 +49,8 @@ we build rails app.</p>
 
 <p><code>$ bin/rails g controller cities index</code></p>
 
+<p><code>$ rake db:migrate</code></p>
+
 <h3>
 <a id="gemfile" class="anchor" href="#gemfile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gemfile</h3>
 
@@ -94,7 +96,7 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
   <span class="pl-en">index</span><span class="pl-k">:</span> <span class="pl-k"><span class="pl-k">-&gt;</span></span>
     $ <span class="pl-k">-&gt;</span>
       $(<span class="pl-s"><span class="pl-pds">'</span>#dataTable<span class="pl-pds">'</span></span>).dataTable
-        <span class="pl-v">ajax</span>: Routes.<span class="pl-en">cities_path</span>()
+        <span class="pl-v">ajax</span>: Routes.<span class="pl-en">cities_index_path</span>()
         <span class="pl-v">columns</span>: [
             <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>
           ,
