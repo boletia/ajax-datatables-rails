@@ -73,12 +73,13 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 
 <p>Add <code>//= require js-routes</code> in your application.js and after clear your cache <code>rake tmp:cache:clear</code></p>
 
-<p>Adding latest version of DataTables and style in application layout:</p>
+<p><strong>DataTables</strong>
+Adding latest version of DataTables and style in application layout:</p>
 
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css<span class="pl-pds">"</span></span> &gt;
 &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 
-<p>I add some defaults for DataTables in global.coffee:</p>
+<p>I add some defaults for my DataTables in global.coffee:</p>
 
 <div class="highlight highlight-source-coffee"><pre>$ <span class="pl-k">-&gt;</span>
   $.extend $.fn.DataTable.defaults,
@@ -117,7 +118,7 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 
 <p><code>bin/rails generate datatable City</code></p>
 
-<p>So we have datatables/city_datatatble.rb file, lets define model fields:</p>
+<p>Well, we have app/datatables/city_datatatble.rb file, lets define model fields:</p>
 
 <div class="highlight highlight-source-ruby"><pre><span class="pl-k">class</span> <span class="pl-en">CityDatatable<span class="pl-e"> &lt; AjaxDatatablesRails::Base</span></span>
 
@@ -157,7 +158,7 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
   <span class="pl-k">end</span>
 <span class="pl-k">end</span></pre></div>
 
-<p>Dont forget to return response with our datatable in controller:</p>
+<p>Don't forget to return response with our datatable in controller:</p>
 
 <div class="highlight highlight-source-ruby"><pre><span class="pl-k">class</span> <span class="pl-en">CitiesController<span class="pl-e"> &lt; ApplicationController</span></span>
   respond_to <span class="pl-c1">:html</span>, <span class="pl-c1">:json</span>
@@ -210,7 +211,14 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
   &lt;/<span class="pl-ent">div</span>&gt;
 &lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
+<p><code>$ bin/rails s</code></p>
+
 <p>That is it!</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p>gem supports ruby 2.0 and higher, rails 3.2 and higher versions</p>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
