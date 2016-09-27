@@ -38,14 +38,52 @@ This gem fully supports DataTables behavior and easily integrates to rails app. 
 <h2>
 <a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic usage</h2>
 
+<p>Let's suppose that we have 2 models: countries and cities. So every country has many cities.
+we build rails app.</p>
+
+<p><code>$ rails new how-to</code></p>
+
+<p><code>$ bin/rails g model country name:string iata:string</code></p>
+
+<p><code>$ bin/rails g model city name:string iata:string timezone:string country:references</code></p>
+
 <h3>
 <a id="gemfile" class="anchor" href="#gemfile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gemfile</h3>
 
-<p><code>gem 'jquery-datatables-rails', github: 'github.com/ajahongir/ajax-datatables-rails', branch: 'v-0-4-0'</code>
-<code>gem 'ajax-datatables-rails'</code></p>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">gem</span> <span class="pl-s"><span class="pl-pds">'</span>ajax-datatables-rails<span class="pl-pds">'</span></span>, <span class="pl-c1">github:</span> <span class="pl-s"><span class="pl-pds">'</span>ajahongir/ajax-datatables-rails<span class="pl-pds">'</span></span>, <span class="pl-c1">branch:</span> <span class="pl-s"><span class="pl-pds">'</span>v-0-4-0<span class="pl-pds">'</span></span>
+<span class="pl-k">gem</span> <span class="pl-s"><span class="pl-pds">'</span>jquery-datatables-rails<span class="pl-pds">'</span></span>
+<span class="pl-k">gem</span> <span class="pl-s"><span class="pl-pds">'</span>rails_script<span class="pl-pds">'</span></span>
+<span class="pl-k">gem</span> <span class="pl-s"><span class="pl-pds">'</span>js-routes<span class="pl-pds">'</span></span>
+<span class="pl-k">gem</span> <span class="pl-s"><span class="pl-pds">'</span>responders<span class="pl-pds">'</span></span></pre></div>
 
-<h3>
-<a id="advanced-usage-with-a-super-easy-pattern" class="anchor" href="#advanced-usage-with-a-super-easy-pattern" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced usage with a super easy pattern</h3>
+<p>And then execute:
+<code>$ bundle</code></p>
+
+<p><strong>rails_script</strong></p>
+
+<p>After bundling you need to run the initial installation generator for <a href="https://github.com/gemgento/rails_script">rails_script</a>:</p>
+
+<p><code>rails g rails_script:install</code>
+and include <code>&lt;%= include_rails_script %&gt;</code> in application layout.</p>
+
+<p><strong>js-routes</strong></p>
+
+<p>Add <code>//= require js-routes</code> in your application.js and after clear your cache <code>rake tmp:cache:clear</code></p>
+
+<p>I add some defauls for DataTables to extend it:</p>
+
+<div class="highlight highlight-source-coffee"><pre>$ <span class="pl-k">-&gt;</span>
+  $.extend $.fn.DataTable.defaults,
+    <span class="pl-v">searching</span>: <span class="pl-c1">true</span>
+    <span class="pl-v">ordering</span>: <span class="pl-c1">true</span>
+    <span class="pl-v">deferRender</span>: <span class="pl-c1">true</span>
+    <span class="pl-v">lengthMenu</span>: [<span class="pl-c1">10</span>, <span class="pl-c1">25</span>, <span class="pl-c1">50</span>, <span class="pl-c1">100</span>]
+    <span class="pl-v">serverSide</span>: <span class="pl-c1">true</span>
+
+    <span class="pl-en">initComplete</span><span class="pl-k">:</span> <span class="pl-k"><span class="pl-k">-&gt;</span></span>
+      $(<span class="pl-s"><span class="pl-pds">'</span>.filters input, .filters select<span class="pl-pds">'</span></span>, <span class="pl-smi">@</span>).<span class="pl-en">on</span> <span class="pl-s"><span class="pl-pds">'</span>change<span class="pl-pds">'</span></span>, <span class="pl-smi">(e)</span> <span class="pl-k">=&gt;</span>
+        <span class="pl-v">th</span> <span class="pl-k">=</span> $(e.target).<span class="pl-en">closest</span>(<span class="pl-s"><span class="pl-pds">"</span>th<span class="pl-pds">"</span></span>)
+        @<span class="pl-en">api</span>().<span class="pl-en">column</span>(th.<span class="pl-en">index</span>()).<span class="pl-en">search</span>($(e.target).<span class="pl-en">val</span>()).<span class="pl-en">draw</span>()</pre></div>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
@@ -61,11 +99,6 @@ This gem fully supports DataTables behavior and easily integrates to rails app. 
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
 <p>You can @mention a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ajahongir/ajax-datatables-rails">Rails &amp; DataTables</a> is maintained by <a href="https://github.com/ajahongir">ajahongir</a>.</span>
