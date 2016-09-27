@@ -47,6 +47,8 @@ we build rails app.</p>
 
 <p><code>$ bin/rails g model city name:string iata:string timezone:string country:references</code></p>
 
+<p><code>$ bin/rails g controller cities index</code></p>
+
 <h3>
 <a id="gemfile" class="anchor" href="#gemfile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gemfile</h3>
 
@@ -70,7 +72,7 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 
 <p>Add <code>//= require js-routes</code> in your application.js and after clear your cache <code>rake tmp:cache:clear</code></p>
 
-<p>I add some defauls for DataTables to extend it:</p>
+<p>I add some defaults for DataTables in global.coffee:</p>
 
 <div class="highlight highlight-source-coffee"><pre>$ <span class="pl-k">-&gt;</span>
   $.extend $.fn.DataTable.defaults,
@@ -84,6 +86,123 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
       $(<span class="pl-s"><span class="pl-pds">'</span>.filters input, .filters select<span class="pl-pds">'</span></span>, <span class="pl-smi">@</span>).<span class="pl-en">on</span> <span class="pl-s"><span class="pl-pds">'</span>change<span class="pl-pds">'</span></span>, <span class="pl-smi">(e)</span> <span class="pl-k">=&gt;</span>
         <span class="pl-v">th</span> <span class="pl-k">=</span> $(e.target).<span class="pl-en">closest</span>(<span class="pl-s"><span class="pl-pds">"</span>th<span class="pl-pds">"</span></span>)
         @<span class="pl-en">api</span>().<span class="pl-en">column</span>(th.<span class="pl-en">index</span>()).<span class="pl-en">search</span>($(e.target).<span class="pl-en">val</span>()).<span class="pl-en">draw</span>()</pre></div>
+
+<p>and add these line in to cities.coffee </p>
+
+<div class="highlight highlight-source-coffee"><pre><span class="pl-k">class</span> <span class="pl-en">App.Cities</span> <span class="pl-k">extends</span> <span class="pl-e">App.Base</span>
+
+  <span class="pl-en">index</span><span class="pl-k">:</span> <span class="pl-k"><span class="pl-k">-&gt;</span></span>
+    $ <span class="pl-k">-&gt;</span>
+      $(<span class="pl-s"><span class="pl-pds">'</span>#dataTable<span class="pl-pds">'</span></span>).dataTable
+        <span class="pl-v">ajax</span>: Routes.<span class="pl-en">cities_path</span>()
+        <span class="pl-v">columns</span>: [
+            <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>
+          ,
+            <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>
+          ,
+            <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>iata<span class="pl-pds">"</span></span>
+          ,
+            <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>custom_column<span class="pl-pds">"</span></span>
+          ,
+            <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>country_name<span class="pl-pds">"</span></span>
+        ]</pre></div>
+
+<p>generating Datatable for model City:</p>
+
+<p><code>bin/rails generate datatable City</code></p>
+
+<p>So we have datatables/city_datatatble.rb file, lets define model fields:</p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">class</span> <span class="pl-en">CityDatatable<span class="pl-e"> &lt; AjaxDatatablesRails::Base</span></span>
+
+  <span class="pl-k">def</span> <span class="pl-en">view_columns</span>
+    <span class="pl-smi">@view_columns</span> <span class="pl-k">||=</span> {
+      <span class="pl-c1">id:</span> { <span class="pl-c1">source:</span> <span class="pl-s"><span class="pl-pds">"</span>City.id<span class="pl-pds">"</span></span>, <span class="pl-c1">cond:</span> <span class="pl-c1">:eq</span> },
+      <span class="pl-c1">name:</span> { <span class="pl-c1">source:</span> <span class="pl-s"><span class="pl-pds">"</span>City.name<span class="pl-pds">"</span></span> },
+      <span class="pl-c1">custom_column:</span> { <span class="pl-c1">source:</span> <span class="pl-s"><span class="pl-pds">"</span>custom_column<span class="pl-pds">"</span></span>, <span class="pl-c1">cond:</span> filter_custom_column_condition },
+      <span class="pl-c1">iata:</span> { <span class="pl-c1">source:</span> <span class="pl-s"><span class="pl-pds">"</span>City.iata<span class="pl-pds">"</span></span> },
+      <span class="pl-c1">country_name:</span> { <span class="pl-c1">source:</span> <span class="pl-s"><span class="pl-pds">"</span>City.country_id<span class="pl-pds">"</span></span>, <span class="pl-c1">cond:</span> filter_country_condition },
+    }
+  <span class="pl-k">end</span>
+
+  <span class="pl-k">private</span>
+  <span class="pl-k">def</span> <span class="pl-en">data</span>
+    records.map <span class="pl-k">do </span>|<span class="pl-smi">city</span>|
+      {
+        <span class="pl-c1">id:</span> city.id,
+        <span class="pl-c1">name:</span> city.name,
+        <span class="pl-c1">iata:</span> city.iata,
+        <span class="pl-c1">country_name:</span> city.country.try(<span class="pl-c1">:name</span>),
+        <span class="pl-c1">custom_column:</span> city[<span class="pl-c1">:custom_column</span>]
+      }
+    <span class="pl-k">end</span>
+  <span class="pl-k">end</span>
+
+  <span class="pl-k">def</span> <span class="pl-en">get_raw_records</span>
+    <span class="pl-c1">City</span>.select(<span class="pl-s"><span class="pl-pds">'</span>cities.*, timezone AS custom_column<span class="pl-pds">'</span></span>).includes(<span class="pl-c1">:country</span>)
+  <span class="pl-k">end</span>
+
+  <span class="pl-k">def</span> <span class="pl-en">filter_country_condition</span>
+    <span class="pl-k">-</span><span class="pl-k">&gt;</span>(column) { column.table[column.field].eq(column.search.value.to_i <span class="pl-k">+</span> <span class="pl-c1">1</span>) }
+  <span class="pl-k">end</span>
+
+  <span class="pl-k">def</span> <span class="pl-en">filter_custom_column_condition</span>
+    <span class="pl-k">-</span><span class="pl-k">&gt;</span>(column) { ::<span class="pl-c1">Arel</span>::<span class="pl-c1">Nodes</span>::<span class="pl-c1">SqlLiteral</span>.<span class="pl-k">new</span>(column.field.to_s).matches(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pse">#{</span><span class="pl-s1"> column.search.value </span><span class="pl-pse"><span class="pl-s1">}</span></span>%<span class="pl-pds">"</span></span>) }
+  <span class="pl-k">end</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>Dont forget to return response with our datatable in controller:</p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">class</span> <span class="pl-en">CitiesController<span class="pl-e"> &lt; ApplicationController</span></span>
+  respond_to <span class="pl-c1">:html</span>, <span class="pl-c1">:json</span>
+
+  <span class="pl-k">def</span> <span class="pl-en">index</span>
+    respond_to <span class="pl-k">do </span>|<span class="pl-smi">format</span>|
+      format.html
+      format.json <span class="pl-k">do</span>
+        render <span class="pl-c1">json:</span> <span class="pl-c1">CityDatatable</span>.<span class="pl-k">new</span>(view_context)
+      <span class="pl-k">end</span>
+    <span class="pl-k">end</span>
+  <span class="pl-k">end</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>Last thing to is adding table in out cities/index.html.erb</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>row<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>col-md-10<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>panel panel-default<span class="pl-pds">"</span></span>&gt;
+
+      &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>panel-heading<span class="pl-pds">"</span></span>&gt;Cities&lt;/<span class="pl-ent">div</span>&gt;
+
+      &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>panel-body<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table-responsive<span class="pl-pds">"</span></span>&gt;
+          &lt;<span class="pl-ent">table</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>dataTable<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table table-striped table-bordered<span class="pl-pds">"</span></span> <span class="pl-e">cellspacing</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>100%<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">thead</span>&gt;
+              &lt;<span class="pl-ent">tr</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>filters<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;
+                  &lt;%= collection_select(:city, :country_id, Country.all, :id, :name, include_blank: true) %&gt;
+                &lt;/<span class="pl-ent">th</span>&gt;
+              &lt;/<span class="pl-ent">tr</span>&gt;
+              &lt;<span class="pl-ent">tr</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;Id&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;Name&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;IATA&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;Timezone&lt;/<span class="pl-ent">th</span>&gt;
+                &lt;<span class="pl-ent">th</span>&gt;Country&lt;/<span class="pl-ent">th</span>&gt;
+              &lt;/<span class="pl-ent">tr</span>&gt;
+            &lt;/<span class="pl-ent">thead</span>&gt;
+            &lt;<span class="pl-ent">tbody</span>&gt;&lt;/<span class="pl-ent">tbody</span>&gt;
+          &lt;/<span class="pl-ent">table</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+      &lt;/<span class="pl-ent">div</span>&gt;
+
+    &lt;/<span class="pl-ent">div</span>&gt;
+  &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
