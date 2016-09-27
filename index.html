@@ -63,6 +63,9 @@ we build rails app.</p>
 
 <p><code>$ bundle</code></p>
 
+<h3>
+<a id="initializing-third-party-libs" class="anchor" href="#initializing-third-party-libs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initializing third-party libs</h3>
+
 <p><strong>rails_script</strong></p>
 
 <p>After bundling you need to run the initial installation generator for <a href="https://github.com/gemgento/rails_script">rails_script</a>:</p>
@@ -80,6 +83,9 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css<span class="pl-pds">"</span></span> &gt;
 &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h3>
+<a id="javascript" class="anchor" href="#javascript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Javascript</h3>
 
 <p>I add some defaults for my DataTables in global.coffee:</p>
 
@@ -115,6 +121,9 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
           ,
             <span class="pl-v">data</span>: <span class="pl-s"><span class="pl-pds">"</span>country_name<span class="pl-pds">"</span></span>
         ]</pre></div>
+
+<h3>
+<a id="model-datatable" class="anchor" href="#model-datatable" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Model Datatable</h3>
 
 <p>generating Datatable for model City:</p>
 
@@ -160,6 +169,9 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
   <span class="pl-k">end</span>
 <span class="pl-k">end</span></pre></div>
 
+<h3>
+<a id="controller" class="anchor" href="#controller" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Controller</h3>
+
 <p>Don't forget to return response with our Datatable in controller:</p>
 
 <div class="highlight highlight-source-ruby"><pre><span class="pl-k">class</span> <span class="pl-en">CitiesController<span class="pl-e"> &lt; ApplicationController</span></span>
@@ -174,6 +186,9 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
     <span class="pl-k">end</span>
   <span class="pl-k">end</span>
 <span class="pl-k">end</span></pre></div>
+
+<h3>
+<a id="view" class="anchor" href="#view" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>View</h3>
 
 <p>Last thing to is adding table in out cities/index.html.erb</p>
 
@@ -220,12 +235,17 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 <h2>
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
-<p>gem supports ruby 2.0 and higher, rails 3.2 and higher versions</p>
+<p>The gem supports ruby 2.0 and higher, rails 3.2 and higher versions.</p>
+
+<h2>
+<a id="sample-project" class="anchor" href="#sample-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample project</h2>
+
+<p>Here is <a href="https://github.com/ajahongir/ajax-datatables-rails-v-0-4-0-how-to">how-to</a> project</p>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can @mention a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Feel free to fork &amp; contribute or leave a feedback if you have any issues.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ajahongir/ajax-datatables-rails">Rails &amp; DataTables</a> is maintained by <a href="https://github.com/ajahongir">ajahongir</a>.</span>
