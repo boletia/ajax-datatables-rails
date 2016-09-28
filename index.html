@@ -22,8 +22,8 @@
       <h2>
 <a id="welcome-to-ajax-datatables-rails" class="anchor" href="#welcome-to-ajax-datatables-rails" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to ajax-datatables-rails</h2>
 
-<p>DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table. For more details loot at home <a href="https://datatables.net/">page</a>
-This gem fully supports DataTables behavior and easily integrates to rails app. No more need to wrire js or rb code, just setup your model datatable. </p>
+<p>DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table. For more details look at home <a href="https://datatables.net/">page</a>
+This gem fully supports DataTables behavior and easily integrates to rails app. No more need to write JS or Ruby code, just setup your model datatable. </p>
 
 <h2>
 <a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
@@ -33,7 +33,7 @@ This gem fully supports DataTables behavior and easily integrates to rails app. 
 <h2>
 <a id="how-to-project" class="anchor" href="#how-to-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How-to project</h2>
 
-<p>I always build admin page with some data presenting and I love to use DataTable in my projects. But Its to hard to build so many table with server-side pagination, ordering &amp; searching. But now we have this tool! And Today I am going to show usage of this gem with a super easy <a href="https://github.com/ajahongir/ajax-datatables-rails-v-0-4-0-how-to">pattern</a>.</p>
+<p>I always build admin page with some data presenting and I love to use DataTable in my projects. But It's to hard to build so many table with server-side pagination, ordering &amp; searching. But now we have this tool! And Today I am going to show usage of this gem with a super easy <a href="https://github.com/ajahongir/ajax-datatables-rails-v-0-4-0-how-to">pattern</a>.</p>
 
 <h2>
 <a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic usage</h2>
@@ -75,7 +75,7 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 
 <p><strong>js-routes</strong></p>
 
-<p>Add <code>//= require js-routes</code> in your application.js and after clear your cache <code>rake tmp:cache:clear</code></p>
+<p>Add <code>//= require js-routes</code> in your <code>application.js</code> and after clear your cache <code>$ rake tmp:cache:clear</code></p>
 
 <p><strong>DataTables</strong></p>
 
@@ -192,40 +192,28 @@ and include <code>&lt;%= include_rails_script %&gt;</code> in application layout
 
 <p>Last thing to is adding table in out cities/index.html.erb</p>
 
-<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>row<span class="pl-pds">"</span></span>&gt;
-  &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>col-md-10<span class="pl-pds">"</span></span>&gt;
-    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>panel panel-default<span class="pl-pds">"</span></span>&gt;
-
-      &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>panel-heading<span class="pl-pds">"</span></span>&gt;Cities&lt;/<span class="pl-ent">div</span>&gt;
-
-      &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>panel-body<span class="pl-pds">"</span></span>&gt;
-        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table-responsive<span class="pl-pds">"</span></span>&gt;
-          &lt;<span class="pl-ent">table</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>dataTable<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table table-striped table-bordered<span class="pl-pds">"</span></span> <span class="pl-e">cellspacing</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>100%<span class="pl-pds">"</span></span>&gt;
-            &lt;<span class="pl-ent">thead</span>&gt;
-              &lt;<span class="pl-ent">tr</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>filters<span class="pl-pds">"</span></span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;
-                  &lt;%= collection_select(:city, :country_id, Country.all, :id, :name, include_blank: true) %&gt;
-                &lt;/<span class="pl-ent">th</span>&gt;
-              &lt;/<span class="pl-ent">tr</span>&gt;
-              &lt;<span class="pl-ent">tr</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;Id&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;Name&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;IATA&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;Timezone&lt;/<span class="pl-ent">th</span>&gt;
-                &lt;<span class="pl-ent">th</span>&gt;Country&lt;/<span class="pl-ent">th</span>&gt;
-              &lt;/<span class="pl-ent">tr</span>&gt;
-            &lt;/<span class="pl-ent">thead</span>&gt;
-            &lt;<span class="pl-ent">tbody</span>&gt;&lt;/<span class="pl-ent">tbody</span>&gt;
-          &lt;/<span class="pl-ent">table</span>&gt;
-        &lt;/<span class="pl-ent">div</span>&gt;
-      &lt;/<span class="pl-ent">div</span>&gt;
-
-    &lt;/<span class="pl-ent">div</span>&gt;
-  &lt;/<span class="pl-ent">div</span>&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table-responsive<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">table</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>dataTable<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table table-striped table-bordered<span class="pl-pds">"</span></span> <span class="pl-e">cellspacing</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>100%<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">thead</span>&gt;
+      &lt;<span class="pl-ent">tr</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>filters<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;&lt;<span class="pl-ent">input</span>/&gt;&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;
+          &lt;%= collection_select(:city, :country_id, Country.all, :id, :name, include_blank: true) %&gt;
+        &lt;/<span class="pl-ent">th</span>&gt;
+      &lt;/<span class="pl-ent">tr</span>&gt;
+      &lt;<span class="pl-ent">tr</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Id&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Name&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;IATA&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Timezone&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Country&lt;/<span class="pl-ent">th</span>&gt;
+      &lt;/<span class="pl-ent">tr</span>&gt;
+    &lt;/<span class="pl-ent">thead</span>&gt;
+    &lt;<span class="pl-ent">tbody</span>&gt;&lt;/<span class="pl-ent">tbody</span>&gt;
+  &lt;/<span class="pl-ent">table</span>&gt;
 &lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
 <p><code>$ bin/rails s</code></p>
