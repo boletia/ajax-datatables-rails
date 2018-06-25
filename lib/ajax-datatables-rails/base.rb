@@ -96,8 +96,15 @@ module AjaxDatatablesRails
     def simple_search(records)
       return records unless (params[:search].present? && params[:search][:value].present?)
       conditions = build_conditions_for(params[:search][:value])
-      records = records.where(conditions) if conditions
+      string_condition = conditions.to_sql
+      string_condition = string_condition.gsub('CAST(', 'unaccent(CAST(')
+      string_condition = string_condition.gsub('AS VARCHAR)', 'AS VARCHAR))')
+      records = records.where(string_condition) if conditions
       records
+    end
+
+    def replace_accents(value)
+      ActiveSupport::Inflector.transliterate(value).to_s
     end
 
     def composite_search(records)
@@ -127,7 +134,8 @@ module AjaxDatatablesRails
       model, column = column.split('.')
       model = model.constantize
       casted_column = ::Arel::Nodes::NamedFunction.new('CAST', [model.arel_table[column.to_sym].as(typecast)])
-      casted_column.matches("%#{sanitize_sql_like(value)}%")
+      value = replace_accents(value)
+      casted_column.matches("%#{value}%")
     end
 
     def deprecated_search_condition(column, value)
@@ -135,7 +143,8 @@ module AjaxDatatablesRails
       model = model.singularize.titleize.gsub( / /, '' ).constantize
 
       casted_column = ::Arel::Nodes::NamedFunction.new('CAST', [model.arel_table[column.to_sym].as(typecast)])
-      casted_column.matches("%#{sanitize_sql_like(value)}%")
+      value = replace_accents(value)
+      casted_column.matches("%#{value}%")
     end
 
     def aggregate_query
