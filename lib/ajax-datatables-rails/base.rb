@@ -104,7 +104,8 @@ module AjaxDatatablesRails
     end
 
     def replace_accents(value)
-      ActiveSupport::Inflector.transliterate(value).to_s
+      value = ActiveSupport::Inflector.transliterate(value).to_s
+      strip_tags(value)
     end
 
     def composite_search(records)
